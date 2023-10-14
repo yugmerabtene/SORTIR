@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }} | Créer une sortie
+{% endblock %}
+
+{% block body %}
+    <h2>Créer une sortie</h2>
+    {{ form_start(sortieForm) }}
+
+    {{ form_row(sortieForm.nom) }}
+    {{ form_row(sortieForm.dateHeureDebut) }}
+    {{ form_row(sortieForm.dateLimiteInscription) }}
+    {{ form_row(sortieForm.nbInscriptionMax) }}
+    {{ form_row(sortieForm.duree) }}  <span>minutes</span>
+    {{ form_row(sortieForm.infosSortie) }}
+    {{ form_row(sortieForm.campus) }}
+    {{ form_row(sortieForm.lieu) }}
+    {{ form_row(sortieForm.inscriptionAuto) }}
+    {{ form_rest(sortieForm) }}
+{#    <button type="submit" name="enregistrer">Enregistrer</button>#}
+{#    <button type="submit" name="publier">Publier</button>#}
+
+    {{ form_end(sortieForm) }}
+    <a href="{{ path('main_home') }}"><button>Annuler</button></a>
+{% endblock %}
+

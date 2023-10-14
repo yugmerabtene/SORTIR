@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Filtrer les sorties</h2>
+    {# TODO faire les filtres de recherche #}
+
+
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th scope="col">Nom de la sortie</th>
+            <th scope="col">Date de la sortie</th>
+            <th scope="col">Clôture des inscriptions</th>
+            <th scope="col">Inscrits/places totales</th>
+            <th scope="col">Etat</th>
+            <th scope="col">Inscrit</th>
+            <th scope="col">Organisateur</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sortie in sorties %}
+            <tr>
+                <th scope="row">{{ sortie.nom|capitalize }}</th>
+                <td>{{ sortie.dateHeureDebut|date('d/m/Y h:i') }}</td>
+                <td>{{ sortie.dateLimiteInscription|date('d/m/Y') }}</td>
+                <td>{{ sortie.participants|length }}/{{ sortie.nbInscriptionMax }}</td>
+                <td>{{ sortie.etat.libelle }}</td>
+                <td>
+                    {% if app.user in sortie.participants %}
+                        X
+                    {% endif %}
+                </td>
+                <td>
+                    {# TODO penser à mettre le lien dans le href #}
+                    <a href="">{{ sortie.organisateur.nom }}</a>
+                </td>
+                <td>
+                    {# TODO penser à mettre les liens dans les href #}
+                    {% if (sortie.etat.libelle == 'Ouverte') or (sortie.etat.libelle == 'Cloturée') %}
+                        <a href="{{ path('sortie_sortie', {'id': sortie.id }) }}">Afficher</a>
+                    {% endif %}
+                    {% if app.user in sortie.participants %}
+                       - <a href="">Se désister</a>
+                    {% else %}
+                       - <a href="">S'inscrire</a>
+                    {% endif %}
+                    {% if app.user == sortie.organisateur %}
+                        {% if sortie.etat == 'Créée' %}
+                            <a href="">Modifier</a>
+                           - <a href="">Publier</a>
+                        {% endif %}
+                        {% if ( sortie.etat.libelle == 'Ouverte') or (sortie.etat.libelle == 'Cloturée') %}
+                           - <a href="">Annuler</a>
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {# TODO penser à mettre le lien dans le href #}
+    <a href="{{ path('sortie_new') }}"><button>Créer une sortie</button></a>
+{% endblock %}
+
+{% block title %}
+{{ parent() }} | Liste des sorties
+{% endblock %}
+
